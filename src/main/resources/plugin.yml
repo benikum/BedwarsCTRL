@@ -1,0 +1,19 @@
+name: BedwarsCTRL
+version: '${project.version}'
+main: de.benikum.bedwarsctrl.Main
+api-version: '1.20'
+commands:
+  createworld:
+    description: generate new world
+    usage: /createworld <name>
+  importworld:
+    description: imports a world
+    usage: /importworld <name>
+  removeworld:
+    description: prevent a world from loading
+    usage: /removeworld <name>
+  joinworld:
+    description: teleports you into the world
+    usage: /joinworld <name>
+  openshop:
+    description: opens shop gui

@@ -43,6 +43,7 @@ public class ImportWorldCommand implements CommandExecutor {
         assert newWorld != null;
         
         mainInstance.addToConfig("worlds", worldName);
+        Bukkit.reload();
         
         player.teleport(newWorld.getSpawnLocation());
         Bukkit.broadcast(Component.text("§a§lGENERATING NEW WORLD DONE"));

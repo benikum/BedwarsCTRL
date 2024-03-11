@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShopPage {
-    private List<ListingItem> listings = new ArrayList<>();
+    private List<ListingItem> listings;
     private ItemStack pageIcon;
 
     public ShopPage(ItemStack pageIcon) {
+        this.listings = new ArrayList<>();
         this.pageIcon = pageIcon;
     }
 
@@ -32,11 +33,10 @@ public class ShopPage {
         return pageIcon;
     }
 
-    public Inventory fillShopTemplate(Inventory shopPage) {
+    public Inventory getShopPage(Inventory shopPage) {
         int dragger = 0;
         for (int i = 0; i < listings.size(); i++) {
-            int column = i % 9;
-            while (column + dragger < 2) {
+            while ((i + dragger) % 9 < 2) {
                 dragger++;
             }
             shopPage.setItem((i + dragger), listings.get(i).getListingIcon());

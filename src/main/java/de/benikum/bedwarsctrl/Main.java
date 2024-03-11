@@ -6,6 +6,7 @@ import de.benikum.bedwarsctrl.world.*;
 import org.bukkit.Bukkit;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -40,6 +41,10 @@ public class Main extends JavaPlugin {
         
         // register events
         getServer().getPluginManager().registerEvents(new ShopManager(), this);
+    }
+    @Override
+    public void onDisable() {
+        HandlerList.unregisterAll(this);
     }
     
     public void addToConfig(String path, String value) {

@@ -33,9 +33,10 @@ public class RemoveWorldCommand implements CommandExecutor {
         Bukkit.broadcast(Component.text("§c§lREMOVING WORLD"));
         
         String worldName = args[0];
-        Bukkit.unloadWorld(worldName, true);
         
+        Bukkit.unloadWorld(worldName, true);
         mainInstance.removeFromConfig("worlds", worldName);
+        Bukkit.reload();
         
         Bukkit.broadcast(Component.text("§a§lREMOVED " + worldName.toUpperCase()));
         Bukkit.broadcast(Component.text("§7/importworld " + worldName + " §rto add it back"));

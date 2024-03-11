@@ -16,28 +16,29 @@ import java.util.List;
 
 public class ShopManager implements Listener {
     private Inventory shopInventory;
-    private List<ShopPage> shopPageList = new ArrayList<>();
-
+    private List<ShopPage> shopPageList;
+    
     public ShopManager() {
+        shopPageList = new ArrayList<>();
         // TODO implement shop config reader
 
         shopInventory = Bukkit.createInventory(null, 5*9, Component.text("Shop"));
-        ItemStack decoGlass = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
+        ItemStack decoGlass = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
 
         ItemMeta glassMeta = decoGlass.getItemMeta();
         glassMeta.displayName(Component.text("§7Page <-> Listing"));
         decoGlass.setItemMeta(glassMeta);
 
         for (int i = 1; i<38; i+=9) {
-            shopInventory.setItem(i,decoGlass);
+            shopInventory.setItem(i, decoGlass);
         }
 
         ShopPage shopPage0 = new ShopPage(new ItemStack(Material.OAK_PLANKS));
         ShopPage shopPage1 = new ShopPage(new ItemStack(Material.TNT));
-        CurrencyItem ironCurrency = new CurrencyItem(Material.IRON_INGOT, Component.text("§fIron"));
-        CurrencyItem goldCurrency = new CurrencyItem(Material.GOLD_INGOT, Component.text("§6Gold"));
-        CurrencyItem diamondCurrency = new CurrencyItem(Material.DIAMOND, Component.text("§bDiamond"));
-        CurrencyItem emeraldCurrency = new CurrencyItem(Material.EMERALD, Component.text("§2Emerald"));
+        CurrencyItem ironCurrency = new CurrencyItem(Material.IRON_INGOT, "§fIron");
+        CurrencyItem goldCurrency = new CurrencyItem(Material.GOLD_INGOT, "§6Gold");
+        CurrencyItem diamondCurrency = new CurrencyItem(Material.DIAMOND, "§bDiamond");
+        CurrencyItem emeraldCurrency = new CurrencyItem(Material.EMERALD, "§2Emerald");
         shopPage0.addListing(new ListingItem(Material.WHITE_WOOL, 16, ironCurrency, 4));
         shopPage0.addListing(new ListingItem(Material.BEACON, 1, goldCurrency, 5));
         shopPage0.addListing(new ListingItem(Material.STICK, 32, diamondCurrency, 12));
@@ -47,20 +48,17 @@ public class ShopManager implements Listener {
         addShopPage(shopPage1);
     }
 
-    public boolean addShopPage(ShopPage shopPage) {
-        if (shopPageList.size() < 5) {
-            shopInventory.setItem(shopPageList.size() * 9, shopPage.getPageIcon());
-            shopPageList.add(shopPage);
-            return true;
-        }
-        return false;
+    public void addShopPage(ShopPage shopPage) {
+        if (shopPageList.size() >= 5) return;
+        shopInventory.setItem(shopPageList.size() * 9, shopPage.getPageIcon());
+        shopPageList.add(shopPage);
     }
     public void openShopGUI(Player player, int page) {
         if (!shopPageList.isEmpty()) {
-            player.openInventory(shopPageList.get(page).fillShopTemplate(shopInventory));
+            player.openInventory(shopPageList.get(page).getShopPage(shopInventory));
         }
     }
-
+    
     @EventHandler
     public void onShopClick(InventoryClickEvent event) {
         if (!event.getView().title().equals(Component.text("Shop"))) return;
@@ -76,11 +74,9 @@ public class ShopManager implements Listener {
         if (column == 0) {
             int row = slot / 9;
             openShopGUI(player, row);
-        } else if (column == 1) {
-            return;
-        } else {
+        } else if (column >= 2) {
             player.sendMessage(event.getCurrentItem().getType().name());
+            //ListingItem listingItem =
         }
-
     }
 }

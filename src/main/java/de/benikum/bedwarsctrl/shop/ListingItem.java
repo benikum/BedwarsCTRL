@@ -2,6 +2,8 @@ package de.benikum.bedwarsctrl.shop;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -13,8 +15,6 @@ public class ListingItem {
     private int amount;
     private CurrencyItem currency;
     private int price;
-
-    private ItemStack listingIcon;
     
     public ListingItem(Material type, int amount, CurrencyItem currency, int price) {
         this.type = type;
@@ -25,16 +25,6 @@ public class ListingItem {
     }
     
     private void updateListingIcon() {
-        listingIcon = new ItemStack(type);
-        ItemMeta iconMeta = listingIcon.getItemMeta();
-        //iconMeta.displayName(Component.text(" "));
-
-        List<Component> iconLore = new ArrayList<>();
-        iconLore.add(currency.getLore(price));
-        iconMeta.lore(iconLore);
-
-        listingIcon.setItemMeta(iconMeta);
-        listingIcon.setAmount(amount);
     }
     
     public CurrencyItem getCurrencyItem() {
@@ -43,13 +33,23 @@ public class ListingItem {
     public Material getType() {
         return type;
     }
-    public int getPrice() {
-        return price;
-    }
-    public int getAmount() {
-        return amount;
-    }
     public ItemStack getListingIcon() {
+        ItemStack listingIcon = new ItemStack(type);
+        ItemMeta iconMeta = listingIcon.getItemMeta();
+
+        List<Component> iconLore = new ArrayList<>();
+        iconLore.add(currency.getLore(price));
+        iconMeta.lore(iconLore);
+
+        listingIcon.setItemMeta(iconMeta);
+        listingIcon.setAmount(amount);
         return listingIcon;
+    }
+    public boolean buyListing(Player player) {
+        Inventory inventory = player.getInventory();
+        if (!inventory.contains(currency.getType(), price)) return false;
+        inventory.remove(new ItemStack(currency.getType(), price));
+        inventory.addItem(new ItemStack(type, amount));
+        return true;
     }
 }

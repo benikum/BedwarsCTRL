@@ -37,6 +37,7 @@ public class CreateWorldCommand implements CommandExecutor {
         assert newWorld != null;
         
         mainInstance.addToConfig("worlds", worldName);
+        Bukkit.reload();
         
         newWorld.setType(0, 0, 0, Material.BEDROCK);
         newWorld.setType(0, 62, 0, Material.GRASS_BLOCK);

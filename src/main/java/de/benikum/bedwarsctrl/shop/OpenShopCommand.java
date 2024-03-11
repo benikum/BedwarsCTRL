@@ -18,7 +18,7 @@ public class OpenShopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String var3, @NotNull String[] args) {
         Player player = (Player) sender;
-        shopManager.openShopGUI(player);
+        shopManager.openShopGUI(player, 0);
         return true;
     }
 }

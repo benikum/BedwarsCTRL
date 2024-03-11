@@ -1,16 +1,18 @@
 package de.benikum.bedwarsctrl.shop;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 
 public class CurrencyItem {
-    Material type;
-    Component name;
-    Item item;
+    private final Material type;
+    private final Component name;
+
     public CurrencyItem(Material type, Component name) {
         this.type = type;
         this.name = name;
+    }
+
+    public Component getLore(int price) {
+        return Component.text(price + "x ").append(name);
     }
 }
